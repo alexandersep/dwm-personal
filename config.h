@@ -1,5 +1,8 @@
-#include <X11/XF86keysym.h>
+#include <X11/XF86keysym.h> /* to help find keycodes use xev and command xmodmap -pk */
 /* See LICENSE file for copyright and license details. */
+
+#define TERMINAL "st"
+#define BROWSER "firefox"
 
 /* appearance */
 static const unsigned int borderpx  = 2;        /* border pixel of windows */
@@ -67,14 +70,12 @@ static const Layout layouts[] = {
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
-static const char *termcmd[]  = { "st", NULL};
-static const char *librewolf[] = {"librewolf-bin", NULL};
+static const char *termcmd[]  = { TERMINAL, NULL};
+static const char *browser[] = { BROWSER, NULL};
 static const char *discord[] = {"discord", NULL};
 static const char *zathura[] = {"zathura", NULL};
 
 /* function keys */ 
-static const char *brupcmd[] = { "xbacklight", "-inc", "5%", NULL }; /* xbacklight intel exclusive, if amd use brightnessctl */
-static const char *brdowncmd[] = { "xbacklight", "-dec", "5%", NULL };
 static const char *upvol[]   = { "amixer", "set", "Master", "5%+",     NULL };
 static const char *downvol[] = { "amixer", "set", "Master", "5%-",     NULL };
 static const char *mutevol[] = { "amixer", "set", "Master", "toggle", NULL };
@@ -83,14 +84,31 @@ static Key keys[] = {
 	/* modifier                     key        function        argument */
 	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
 	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd } },
-	{ MODKEY|ShiftMask,             XK_f,      spawn,          {.v = librewolf} },
+	{ MODKEY|ShiftMask,             XK_f,      spawn,          {.v = browser} },
 	{ MODKEY|ShiftMask,             XK_d,      spawn,          {.v = discord} },
 	{ MODKEY|ShiftMask,             XK_z,      spawn,          {.v = zathura} },
-    { 0,          XF86XK_MonBrightnessUp,      spawn,          {.v = brupcmd} },
-    { 0,        XF86XK_MonBrightnessDown,      spawn,          {.v = brdowncmd} },
+    { MODKEY|ShiftMask,			    XK_m,	   spawn,		   {.v = (const char*[]){ TERMINAL, "-e", "ncmpcpp", NULL } } },
     { 0,                XF86XK_AudioMute,      spawn,          {.v = mutevol} },
     { 0,         XF86XK_AudioLowerVolume,      spawn,          {.v = downvol} },
     { 0,         XF86XK_AudioRaiseVolume,      spawn,          {.v = upvol} },
+    { 0,                XF86XK_AudioPrev,	   spawn,		   {.v = (const char*[]){ "mpc", "prev", NULL } } },
+	{ 0,                XF86XK_AudioNext,	   spawn,		   {.v = (const char*[]){ "mpc",  "next", NULL } } },
+	{ 0,               XF86XK_AudioPause,	   spawn,		   {.v = (const char*[]){ "mpc", "pause", NULL } } },
+	{ 0,                XF86XK_AudioPlay,	   spawn,		   {.v = (const char*[]){ "mpc", "play", NULL } } },
+	{ 0,                XF86XK_AudioStop,	   spawn,		   {.v = (const char*[]){ "mpc", "stop", NULL } } },
+	{ 0,              XF86XK_AudioRewind,	   spawn,		   {.v = (const char*[]){ "mpc", "seek", "-10", NULL } } },
+	{ 0,             XF86XK_AudioForward,	   spawn,		   {.v = (const char*[]){ "mpc", "seek", "+10", NULL } } },
+    { 0,               XF86XK_AudioMedia,	   spawn,		   {.v = (const char*[]){ TERMINAL, "-e", "ncmpcpp", NULL } } },
+	{ MODKEY,             XK_bracketleft,	   spawn,		   {.v = (const char*[]){ "mpc", "seek", "-10", NULL } } },
+	{ MODKEY,            XK_bracketright,	   spawn,		   {.v = (const char*[]){ "mpc", "seek", "+10", NULL } } },
+	{ MODKEY|ShiftMask,   XK_bracketleft,	   spawn,		   {.v = (const char*[]){ "mpc", "seek", "-50", NULL } } },
+	{ MODKEY|ShiftMask,  XK_bracketright,	   spawn,		   {.v = (const char*[]){ "mpc", "seek", "+50", NULL } } },
+	{ MODKEY,              XK_apostrophe,	   spawn,		   {.v = (const char*[]){ "mpc", "seek", "0%", NULL } } },
+	{ MODKEY,              XK_numbersign,	   spawn,		   {.v = (const char*[]){ "mpc", "repeat", NULL } } },
+	{ MODKEY|ShiftMask,             XK_p,	   spawn,          {.v = (const char*[]){ "mpc", "pause", NULL } } },
+	{ MODKEY|ShiftMask,             XK_o,	   spawn,          {.v = (const char*[]){ "mpc", "play", NULL } } },
+    { MODKEY|ShiftMask,             XK_l,	   spawn,		   {.v = (const char*[]){ "mpc", "prev", NULL } } },
+	{ MODKEY|ShiftMask,     XK_semicolon,	   spawn,		   {.v = (const char*[]){ "mpc",  "next", NULL } } },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
