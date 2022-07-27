@@ -109,6 +109,7 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_o,	   spawn,          {.v = (const char*[]){ "mpc", "play", NULL } } },
     { MODKEY|ShiftMask,             XK_l,	   spawn,		   {.v = (const char*[]){ "mpc", "prev", NULL } } },
 	{ MODKEY|ShiftMask,     XK_semicolon,	   spawn,		   {.v = (const char*[]){ "mpc",  "next", NULL } } },
+	{ MODKEY|ShiftMask,    XK_numbersign,	   spawn,		   {.v = (const char*[]){ "./.scripts/dmenuunicode", NULL } } },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
