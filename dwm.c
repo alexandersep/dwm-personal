@@ -209,6 +209,7 @@ static void scan(void);
 static int sendevent(Client *c, Atom proto);
 static void sendmon(Client *c, Monitor *m);
 static void setclientstate(Client *c, long state);
+static void togglefullscr(const Arg *arg);
 static void setfocus(Client *c);
 static void setfullscreen(Client *c, int fullscreen);
 static void setgaps(const Arg *arg);
@@ -1766,6 +1767,13 @@ togglefloating(const Arg *arg)
 		resize(selmon->sel, selmon->sel->x, selmon->sel->y,
 			selmon->sel->w, selmon->sel->h, 0);
 	arrange(selmon);
+}
+
+void 
+togglefullscr(const Arg *arg)
+{
+    if (selmon->sel)
+        setfullscreen(selmon->sel, !selmon->sel->isfullscreen);
 }
 
 void
